@@ -8,12 +8,12 @@ module Codebreaker
     def initialize
       @secret_code = ""
       @turns = 10
-      @win = false@hints = 3
+      @win = false
+      @hints = 5
     end
 
     def start
-      rnd = Random.new
-      4.times { @secret_code << rnd.rand(1..6).to_s }
+      4.times { @secret_code << Random.new.rand(1..6).to_s }
     end
 
     def check_guess(guess)
@@ -24,24 +24,23 @@ module Codebreaker
           result << "+"
         elsif @secret_code.include? x
           result << "-"
-        else
-          result << "."
         end
       end
       @win = true if result == "++++"
       return result
     end
 
-    def hint(number) 
+    def hint
       @hints -= 1
-      @secret_code.index(number) + 1
+      @secret_code[Random.new.rand(0..3)]
     end
 
-    def get_score
+    def get_score(username)
       {
+        name: username,
         win: @win,
-        turns_left: @turns,
-        hints_left: @hints,
+        turns: 10 - @turns,
+        hints: 5 - @hints,
         date: Time.now
       }
     end

@@ -33,11 +33,6 @@ module Codebreaker
         expect(game.check_guess("2143")).to eq("----")
       end
 
-      it "marks . if no such digit in secret code" do
-        game.instance_variable_set(:@secret_code, "1234")
-        expect(game.check_guess("1534")).to eq("+.++")
-      end
-
       it "make win true if guess if ++++" do
         game.check_guess(secret_code)
         expect(game.win).to eq(true)
@@ -47,14 +42,13 @@ module Codebreaker
     describe "#hint" do
       it "give position of some digit in secret code" do
         game.instance_variable_set(:@secret_code, "1234")
-        expect(game.hint("3")).to eq(3)
+        expect(game.hint).to match(/\b[1-4]/)
       end
 
       it "decrement number of hints by one" do
-        game.hint("1")
-        expect(game.hints).to eq(2)
+        game.hint
+        expect(game.hints).to eq(4)
       end
     end
-
   end
 end

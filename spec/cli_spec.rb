@@ -21,9 +21,9 @@ module Codebreaker
         expect { cli.play }.to output(/You lose./).to_stdout
       end
 
-      it "puts suggestion to to take a hint" do
-        expect { cli.play }.to output(/Do you want a hint/).to_stdout
-      end
+      it "give a hint if user type 'hint'" do 
+        allow(cli).to receive(:gets).and_return("hint")
+        expect {cli.play}.to output(/\b[1-4]/).to_stdout
 
       it "puts suggestion to play again when game over" do
         game.win = true
@@ -37,11 +37,7 @@ module Codebreaker
 
     end
 
-    describe "#suggest_hint" do
-      it "puts hint" do
-        expect { cli.play }.to output(/\b[1-4]/).to_stdout
-      end
-
+    describe "#save_score" do
       it "ask to save user name" do 
         allow(cli).to receive(:gets).and_return("y")       
         expect { cli.save_score }.to output(/your name/).to_stdout

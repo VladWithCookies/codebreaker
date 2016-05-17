@@ -14,18 +14,17 @@ module Codebreaker
       @game.start
       while @game.turns > 0
         puts "Write a guess:"
-        puts @game.check_guess(gets.chomp)
+        answer = gets.chomp
+        answer == "hint" ? hint : check_guess(answer)
         break if @game.win
-        suggest_hint
       end
       puts @game.win ? "You win!" : "You lose. Secret code is #{@game.secret_code}!"
       save_score
       play_again
     end
 
-    def suggest_hint 
-      puts "Do you want a hint (y/n)?" if @game.hints > 0   
-      puts "Number: #{ @game.hint }\n#{@game.hints} left." if gets.chomp == "y"
+    def hint 
+      puts "Secret code contain #{ @game.hint }.\n#{@game.hints} left."
     end
 
     def play_again
@@ -42,6 +41,10 @@ module Codebreaker
         puts "What is your name?"
         save(@game.get_score(gets.chomp))
       end
+    end
+
+    def check_guess(guess)
+      puts @game.check_guess(guess)
     end
 
     private

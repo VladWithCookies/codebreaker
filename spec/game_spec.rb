@@ -33,9 +33,20 @@ module Codebreaker
         expect(game.check_guess("2143")).to eq("----")
       end
 
-      it "make win true if guess if ++++" do
+      it "make win true if guess is ++++" do
         game.check_guess(secret_code)
         expect(game.win).to eq(true)
+      end
+
+      [
+        ['1234', '1245', '++-'], ['1234', '1111', '+'], ['1234','1432', '++--'],
+        ['1234', '4565', '-'], ['5556', '1553', '++'], ['5234', '1234', '+++'],
+        ['4561', '3561', '+++'], ['4562', '2653', '---'], ['2345', '3455', '+--']
+      ].each do |x|
+        it "return right #{x[2]} mark for #{x[0]} code and #{x[1]} guess" do
+          game.instance_variable_set(:@secret_code, x[0])
+          expect(game.check_guess(x[1])).to eq(x[2])
+        end
       end
     end
 

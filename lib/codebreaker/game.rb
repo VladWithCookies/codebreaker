@@ -5,11 +5,14 @@ module Codebreaker
     attr_accessor :secret_code
     attr_accessor :hints
     
+    NUM_OF_HINTS = 5
+    NUM_OF_TURNS = 10
+
     def initialize
       @secret_code = ""
-      @turns = 10
+      @turns = NUM_OF_TURNS
       @win = false
-      @hints = 5
+      @hints = NUM_OF_HINTS
     end
 
     def start
@@ -19,13 +22,16 @@ module Codebreaker
     def check_guess(guess)
       @turns -= 1
       result = ""
+      code = @secret_code.chars
+      g = guess.chars
       guess.chars.each_with_index do |x, i| 
         if x == @secret_code[i]
           result << "+"
-        elsif @secret_code.include? x
-          result << "-"
+          g.delete(x) 
+          code.delete(x)
         end
       end
+      g.each { |x| result << "-" if code.include? x}
       @win = true if result == "++++"
       return result
     end
@@ -39,8 +45,8 @@ module Codebreaker
       {
         name: username,
         win: @win,
-        turns: 10 - @turns,
-        hints: 5 - @hints,
+        turns: NUM_OF_TURNS - @turns,
+        hints: NUM_OF_HINTS - @hints,
         date: Time.now
       }
     end

@@ -2,8 +2,8 @@ require 'spec_helper'
 
 module Codebreaker
   RSpec.describe Game do
-    let(:game) { Game.new }
-    let(:secret_code) { game.instance_variable_get(:@secret_code) }
+    subject(:game) { Game.new }
+    subject(:secret_code) { game.instance_variable_get(:@secret_code) }
 
     before do
       game.start
@@ -40,7 +40,7 @@ module Codebreaker
 
       [
         ['1234', '1245', '++-'], ['1234', '1111', '+'], ['1234','1432', '++--'],
-        ['1234', '4565', '-'], ['5556', '1553', '++'], ['5234', '1234', '+++'],
+        ['1234', '4565', '-'], ['5556', '1553', '++'], ['1234', '2125', '--'],
         ['4561', '3561', '+++'], ['4562', '2653', '---'], ['2345', '3455', '+--']
       ].each do |x|
         it "return right #{x[2]} mark for #{x[0]} code and #{x[1]} guess" do
@@ -58,7 +58,7 @@ module Codebreaker
 
       it "decrement number of hints by one" do
         game.hint
-        expect(game.hints).to eq(4)
+        expect(game.hints).to eq(0)
       end
     end
   end

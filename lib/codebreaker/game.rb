@@ -5,7 +5,7 @@ module Codebreaker
     attr_accessor :secret_code
     attr_accessor :hints
     
-    NUM_OF_HINTS = 5
+    NUM_OF_HINTS = 1
     NUM_OF_TURNS = 10
 
     def initialize
@@ -16,29 +16,30 @@ module Codebreaker
     end
 
     def start
-      4.times { @secret_code << Random.new.rand(1..6).to_s }
+      @secret_code = (1..4).map { rand(1..6) }.join
     end
 
     def check_guess(guess)
       @turns -= 1
       result = ""
-      code = @secret_code.chars
-      g = guess.chars
+      code, g = @secret_code.chars, guess.chars
       guess.chars.each_with_index do |x, i| 
-        if x == @secret_code[i]
-          result << "+"
-          g.delete(x) 
-          code.delete(x)
-        end
+        next unless x == @secret_code[i]
+        result << "+"
+        delete_at_both(code, g, x)
       end
-      g.each { |x| result << "-" if code.include? x}
+      guess.chars.each do |x|  
+        next unless code.include? x
+        result << "-"
+        delete_at_both(code, g, x) 
+      end 
       @win = true if result == "++++"
       return result
     end
 
     def hint
       @hints -= 1
-      @secret_code[Random.new.rand(0..3)]
+      @secret_code[rand(0..3)]
     end
 
     def get_score(username)
@@ -50,5 +51,10 @@ module Codebreaker
         date: Time.now
       }
     end
+    private
+      def delete_at_both(a, b, x)
+        a.delete(x)
+        b.delete(x)
+      end
   end
 end

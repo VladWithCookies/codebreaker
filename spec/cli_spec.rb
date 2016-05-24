@@ -2,8 +2,8 @@ require 'spec_helper'
 
 module Codebreaker
   RSpec.describe Cli do
-    let(:cli) { Cli.new }
-    let(:game) { cli.game }
+    subject(:cli) { Cli.new }
+    subject(:game) { cli.game }
 
     before do
       allow(cli).to receive(:gets).and_return("1234")
@@ -24,6 +24,7 @@ module Codebreaker
       it "give a hint if user type 'hint'" do 
         allow(cli).to receive(:gets).and_return("hint")
         expect {cli.play}.to output(/\b[1-4]/).to_stdout
+      end
 
       it "puts suggestion to play again when game over" do
         game.win = true
@@ -43,5 +44,6 @@ module Codebreaker
         expect { cli.save_score }.to output(/your name/).to_stdout
       end
     end
+
   end
 end

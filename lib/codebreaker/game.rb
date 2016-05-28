@@ -20,6 +20,7 @@ module Codebreaker
     end
 
     def check_guess(guess)
+      return "++++" if guess == @secret_code
       @turns -= 1
       result = ""
       code, g = @secret_code.chars, guess.chars

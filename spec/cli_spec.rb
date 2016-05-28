@@ -3,7 +3,7 @@ require 'spec_helper'
 module Codebreaker
   RSpec.describe Cli do
     subject(:cli) { Cli.new }
-    subject(:game) { cli.game }
+    let(:game) { cli.game }
 
     before do
       allow(cli).to receive(:gets).and_return("1234")

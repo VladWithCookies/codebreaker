@@ -26,16 +26,17 @@ module Codebreaker
       end
       @turns -= 1
       result = ""
-      code, g = @secret_code.chars, guess.chars
-      guess.chars.each_with_index do |x, i| 
+      code_chars, guess_chars = @secret_code.chars, guess.chars
+      guess_chars_copy = guess.chars
+      guess_chars_copy.each_with_index do |x, i| 
         next unless x == @secret_code[i]
         result << "+"
-        delete_at_both(code, g, x)
+        delete_at_both(code_chars, guess_chars, x)
       end
-      guess.chars.each do |x|  
-        next unless code.include? x
+      guess_chars_copy.each do |x|  
+        next unless code_chars.include? x
         result << "-"
-        delete_at_both(code, g, x) 
+        delete_at_both(code_chars, guess_chars, x) 
       end 
       return result
     end
